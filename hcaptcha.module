@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @file
+ * Verifies if user is a human without necessity to solve a CAPTCHA.
+ */
+
+use Drupal\hcaptcha\HCaptcha\Drupal8Post;
+use Drupal\hcaptcha\HCaptcha\HCaptcha;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_captcha().
+ */
+function hcaptcha_captcha($op, $captcha_type = '') {
+
+  switch ($op) {
+    case 'list':
+      return ['hCaptcha'];
+
+    case 'generate':
+      $captcha = [];
+      if ($captcha_type == 'hCaptcha') {
+        $config = \Drupal::config('hcaptcha.settings');
+        $renderer = \Drupal::service('renderer');
+        $hcaptcha_site_key = $config->get('site_key');
+        $hcaptcha_secret_key = $config->get('secret_key');
+
+        if (!empty($hcaptcha_site_key) && !empty($hcaptcha_secret_key)) {
+          $attributes = [
+            'class' => 'h-captcha',
+            'data-sitekey' => $hcaptcha_site_key,
+            'data-theme' => $config->get('widget.theme'),
+            'data-size' => $config->get('widget.size'),
+            'data-tabindex' => $config->get('widget.tabindex'),
+          ];
+          $hcaptcha = new HCaptcha($hcaptcha_site_key, $hcaptcha_secret_key, $attributes);
+          $captcha = $hcaptcha->getWidget('hcaptcha_captcha_validation');
+
+          $hcaptcha_src = $config->get('hcaptcha_src');
+          $captcha['form']['hcaptcha_widget']['#attached'] = [
+            'html_head' => [
+              [
+                [
+                  '#tag' => 'script',
+                  '#attributes' => [
+                    'src' => Url::fromUri($hcaptcha_src, ['query' => ['hl' => \Drupal::service('language_manager')->getCurrentLanguage()->getId()], 'absolute' => true])->toString(),
+                    'async' => true,
+                    'defer' => true,
+                  ],
+                ],
+                'hcaptcha_api',
+              ],
+            ],
+          ];
+        } else {
+          // Fallback to Math captcha as hCaptcha is not configured.
+          $captcha = captcha_captcha('generate', 'Math');
+        }
+
+        // If module configuration changes the form cache need to be refreshed.
+        $renderer->addCacheableDependency($captcha['form'], $config);
+      }
+      return $captcha;
+  }
+}
+
+/**
+ * CAPTCHA Callback; Validates the hCaptcha code.
+ */
+function hcaptcha_captcha_validation($solution, $response, $element, $form_state) {
+  $config = \Drupal::config('hcaptcha.settings');
+
+  $hcaptcha_site_key = $config->get('site_key');
+  $hcaptcha_secret_key = $config->get('secret_key');
+
+  if (!isset($_POST['h-captcha-response']) || empty($_POST['h-captcha-response']) || empty($hcaptcha_secret_key)) {
+    return false;
+  }
+
+  $captcha = new HCaptcha($hcaptcha_site_key, $hcaptcha_secret_key, array(), new Drupal8Post());
+  $captcha->validate($_POST['h-captcha-response'], \Drupal::request()->getClientIp());
+
+  if ($captcha->isSuccess()) {
+    // Verified!
+    return true;
+  } else {
+    foreach ($captcha->getErrors() as $error) {
+      \Drupal::logger('hCaptcha')->error('@error', ['@error' => $error]);
+    }
+  }
+  return false;
+}
