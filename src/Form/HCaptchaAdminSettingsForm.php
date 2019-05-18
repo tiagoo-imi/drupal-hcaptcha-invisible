@@ -39,7 +39,7 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
 
     $form['general']['hcaptcha_site_key'] = [
       '#default_value' => $config->get('site_key'),
-      '#description' => $this->t('The site key given to you when you <a href=":url">register for hCaptcha</a>.', [':url' => 'https://hcaptcha.com']),
+      '#description' => $this->t('The site key given to you when you <a href=":url">register for hCaptcha</a>.', [':url' => 'https://hcaptcha.com/?r=8a46bae6b225']),
       '#maxlength' => 50,
       '#required' => true,
       '#title' => $this->t('Site key'),
@@ -48,7 +48,7 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
 
     $form['general']['hcaptcha_secret_key'] = [
       '#default_value' => $config->get('secret_key'),
-      '#description' => $this->t('The secret key given to you when you <a href=":url">register for hCaptcha</a>.', [':url' => 'https://hcaptcha.com']),
+      '#description' => $this->t('The secret key given to you when you <a href=":url">register for hCaptcha</a>.', [':url' => 'https://hcaptcha.com/?r=8a46bae6b225']),
       '#maxlength' => 50,
       '#required' => true,
       '#title' => $this->t('Secret key'),
