@@ -4,7 +4,7 @@ hCaptcha for Drupal
 The hCaptcha module uses the hCaptcha web service to
 improve the CAPTCHA system and protect email addresses. For
 more information on what hCaptcha is, please visit:
-    https://hcaptcha.com/?r=8a46bae6b225
+    https://hcaptcha.com/
 
 DEPENDENCIES
 ------------
@@ -24,7 +24,7 @@ CONFIGURATION
        admin/config/people/captcha/hcaptcha
 
 3. Register on:
-       https://hcaptcha.com/?r=8a46bae6b225
+       https://hcaptcha.com/
 
 4. Input the site and secret keys into the hCaptcha settings.
 
@@ -37,4 +37,4 @@ THANK YOU
 
  * Thank you goes to the hCaptcha team for all their
    help, support and their amazing Captcha solution
-       https://hcaptcha.com/?r=8a46bae6b225
+       https://hcaptcha.com/
