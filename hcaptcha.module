@@ -8,6 +8,7 @@
 use Drupal\hcaptcha\HCaptcha\Drupal8Post;
 use Drupal\hcaptcha\HCaptcha\HCaptcha;
 use Drupal\Core\Url;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Implements hook_captcha().
@@ -90,4 +91,30 @@ function hcaptcha_captcha_validation($solution, $response, $element, $form_state
     }
   }
   return false;
+}
+
+/**
+ * Implements hook_help().
+ */
+function hcaptcha_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+
+    case 'help.page.hcaptcha':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('hCaptcha is designed to solve the most labor intensive problem in machine learning: labeling massive amounts of data in a timely, affordable, and reliable way.') . '</p>';
+      $output .= '<p>' . t('More data generally produces better results in training machine learning models. The recent success of deep models has led to increasingly large datasets, almost always with some human review. However, creating large human-reviewed datasets via Mechanical Turk, Crowdflower, etc. is both slow and expensive.') . '</p>';
+      $output .= '<p>' . t('hCaptcha allows websites to make money serving this demand while blocking bots and other forms of abuse.') . '</p>';
+
+            // Add a link to the Drupal.org project.
+      $output .= '<p>';
+      $output .= t('Visit the <a href=":project_link">hCaptcha project page</a> on Drupal.org for more information.',[
+        ':project_link' => 'https://www.drupal.org/project/hcaptcha'
+        ]);
+      $output .= '</p>';
+
+      return $output;
+
+    default:
+  }
 }
