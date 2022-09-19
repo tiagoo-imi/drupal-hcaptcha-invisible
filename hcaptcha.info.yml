@@ -2,8 +2,7 @@ name: 'hCaptcha'
 type: module
 description: 'Protect your website from spam and abuse while letting real people pass through with ease.'
 package: Spam control
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
 configure: hcaptcha.admin_settings_form
 dependencies:
   - captcha:captcha
