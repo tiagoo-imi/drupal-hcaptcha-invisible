@@ -101,6 +101,7 @@ class HCaptcha
     $error_codes = array(
       'missing-input-secret' => t('Your secret key is missing.'),
       'invalid-input-secret' => t('Your secret key is invalid or malformed.'),
+      'sitekey-secret-mismatch' => t('Your site key is invalid for your secret key.'),
       'missing-input-response' => t('The response parameter (verification token) is missing.'),
       'invalid-input-response' => t('The response parameter (verification token) is invalid or malformed.'),
       'bad-request' => t('The request is invalid or malformed.'),
