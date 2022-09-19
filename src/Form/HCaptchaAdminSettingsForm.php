@@ -110,6 +110,7 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
     $config
       ->set('site_key', $form_state->getValue('hcaptcha_site_key'))
       ->set('secret_key', $form_state->getValue('hcaptcha_secret_key'))
+      ->set('hcaptcha_src', $form_state->getValue('hcaptcha_src'))
       ->set('widget.theme', $form_state->getValue('hcaptcha_theme'))
       ->set('widget.size', $form_state->getValue('hcaptcha_size'))
       ->set('widget.tabindex', $form_state->getValue('hcaptcha_tabindex'))
