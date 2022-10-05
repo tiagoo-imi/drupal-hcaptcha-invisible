@@ -40,17 +40,17 @@ function hcaptcha_captcha($op, $captcha_type = '') {
 
           $hcaptcha_src = $config->get('hcaptcha_src');
           $captcha['form']['hcaptcha_widget']['#attached'] = [
-            'html_head' => [
-              [
-                [
-                  '#tag' => 'script',
-                  '#attributes' => [
-                    'src' => Url::fromUri($hcaptcha_src, ['query' => ['hl' => \Drupal::service('language_manager')->getCurrentLanguage()->getId()], 'absolute' => true])->toString(),
-                    'async' => true,
-                    'defer' => true,
+            'library' => ['hcaptcha/loader'],
+            'drupalSettings' => [
+              'hcaptcha' => [
+                'src' => Url::fromUri($hcaptcha_src, [
+                  'query' => [
+                    'hl' => \Drupal::service('language_manager')->getCurrentLanguage()->getId(),
+                    'render' => 'explicit',
+                    'onload' => 'drupalHcaptchaOnload',
                   ],
-                ],
-                'hcaptcha_api',
+                  'absolute' => true,
+                ])->toString()
               ],
             ],
           ];
