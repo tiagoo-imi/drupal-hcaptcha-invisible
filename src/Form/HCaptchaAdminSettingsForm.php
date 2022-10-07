@@ -98,6 +98,18 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
       '#type' => 'number',
       '#min' => -1,
     ];
+    $form['widget']['hcaptcha_max_score'] = [
+      '#default_value' => $config->get('widget.max_score'),
+      '#description' => $this->t('Maximum acceptable score, 1.0 means a bot/clickfarm was definitely detected. <strong>Score-based verification requires an <a href=":hcaptcha_enterprise_url" target="_blank">enterprise hCaptcha account</a></strong>.', [
+        ':hcaptcha_enterprise_url' => Url::fromUri('https://www.hcaptcha.com/enterprise')->toString(),
+      ]),
+      '#maxlength' => 4,
+      '#title' => $this->t('Maximum Score'),
+      '#type' => 'number',
+      '#step' => 0.05,
+      '#min' => 0,
+      '#max' => 1.0,
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -114,6 +126,7 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
       ->set('widget.theme', $form_state->getValue('hcaptcha_theme'))
       ->set('widget.size', $form_state->getValue('hcaptcha_size'))
       ->set('widget.tabindex', $form_state->getValue('hcaptcha_tabindex'))
+      ->set('widget.max_score', $form_state->getValue('hcaptcha_max_score'))
       ->save();
 
     parent::submitForm($form, $form_state);

@@ -58,7 +58,7 @@ class HCaptcha
     return $widget;
   }
 
-  public function validate($response_token, $remote_ip = '') {
+  public function validate($response_token, $remote_ip = '', $max_score = 0.8) {
     $query = array(
       'secret' => $this->secretKey,
       'response' => $response_token,
@@ -66,11 +66,25 @@ class HCaptcha
     );
     $this->validated = $this->requestMethod->submit(self::SITE_VERIFY_URL, array_filter($query));
 
-    if (isset($this->validated->success) && $this->validated->success === true) {
-      // Verified!
-      $this->success = true;
-    } else {
-      $this->errors = $this->getResponseErrors();
+    if (isset($this->validated->score)) {
+      if ($this->validated->score <= $max_score) {
+        $this->success = TRUE;
+      }
+      else {
+        $this->errors = [t('Score for the response (@score) is above the acceptable max score (@max_score).', [
+          '@score' => $this->validated->score,
+          '@max_score' => $max_score,
+        ])];
+      }
+    }
+    elseif (isset($this->validated->success)) {
+      if ($this->validated->success === TRUE) {
+        // Verified!
+        $this->success = TRUE;
+      }
+      else {
+        $this->errors = $this->getResponseErrors();
+      }
     }
   }
 

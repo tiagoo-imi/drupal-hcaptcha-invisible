@@ -74,13 +74,14 @@ function hcaptcha_captcha_validation($solution, $response, $element, $form_state
 
   $hcaptcha_site_key = $config->get('site_key');
   $hcaptcha_secret_key = $config->get('secret_key');
+  $hcaptcha_max_score = $config->get('widget.max_score');
 
   if (!isset($_POST['h-captcha-response']) || empty($_POST['h-captcha-response']) || empty($hcaptcha_secret_key)) {
     return false;
   }
 
   $captcha = new HCaptcha($hcaptcha_site_key, $hcaptcha_secret_key, array(), new Drupal8Post());
-  $captcha->validate($_POST['h-captcha-response'], \Drupal::request()->getClientIp());
+  $captcha->validate($_POST['h-captcha-response'], \Drupal::request()->getClientIp(), $hcaptcha_max_score);
 
   if ($captcha->isSuccess()) {
     // Verified!

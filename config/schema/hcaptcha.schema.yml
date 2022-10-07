@@ -26,3 +26,6 @@ hcaptcha.settings:
         tabindex:
           type: integer
           label: 'Tabindex'
+        max_score:
+          type: float
+          label: 'Maximum score'
