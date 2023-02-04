@@ -2,15 +2,22 @@
 
 namespace Drupal\hcaptcha\HCaptcha;
 
-interface RequestMethod
-{
+/**
+ * Summary of RequestMethod.
+ */
+interface RequestMethod {
+
   /**
    * Submit the request with the specified parameters.
    *
    * @param string $url
-   * @param array $params Request parameters
+   *   Url.
+   * @param array $params
+   *   Request parameters.
    *
-   * @return \stdClass Body of the hCaptcha response
+   * @return mixed
+   *   \stdClass Body of the hCaptcha response
    */
-    public function submit($url, array $params);
+  public function submit($url, array $params);
+
 }
