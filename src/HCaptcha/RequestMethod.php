@@ -18,6 +18,6 @@ interface RequestMethod {
    * @return mixed
    *   \stdClass Body of the hCaptcha response
    */
-  public function submit($url, array $params);
+  public function submit(string $url, array $params);
 
 }
