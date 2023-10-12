@@ -34,14 +34,14 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
     $form['general'] = [
       '#type' => 'details',
       '#title' => $this->t('General settings'),
-      '#open' => TRUE,
+      '#open' => true,
     ];
 
     $form['general']['hcaptcha_site_key'] = [
       '#default_value' => $config->get('site_key'),
       '#description' => $this->t('The site key given to you when you <a href=":url">register for hCaptcha</a>.', [':url' => 'https://hcaptcha.com/?r=8a46bae6b225']),
       '#maxlength' => 50,
-      '#required' => TRUE,
+      '#required' => true,
       '#title' => $this->t('Site key'),
       '#type' => 'textfield',
     ];
@@ -50,7 +50,7 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('secret_key'),
       '#description' => $this->t('The secret key given to you when you <a href=":url">register for hCaptcha</a>.', [':url' => 'https://hcaptcha.com/?r=8a46bae6b225']),
       '#maxlength' => 50,
-      '#required' => TRUE,
+      '#required' => true,
       '#title' => $this->t('Secret key'),
       '#type' => 'textfield',
     ];
@@ -59,7 +59,7 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('hcaptcha_src'),
       '#description' => $this->t('Default URL is ":url".', [':url' => 'https://hcaptcha.com/1/api.js']),
       '#maxlength' => 200,
-      '#required' => TRUE,
+      '#required' => true,
       '#title' => $this->t('hCaptcha javascript resource URL'),
       '#type' => 'textfield',
     ];
@@ -68,7 +68,7 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
     $form['widget'] = [
       '#type' => 'details',
       '#title' => $this->t('Widget settings'),
-      '#open' => TRUE,
+      '#open' => true,
     ];
     $form['widget']['hcaptcha_theme'] = [
       '#default_value' => $config->get('widget.theme'),

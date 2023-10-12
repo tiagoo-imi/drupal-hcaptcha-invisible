@@ -49,13 +49,12 @@ function hcaptcha_captcha($op, $captcha_type = '') {
                     'render' => 'explicit',
                     'onload' => 'drupalHcaptchaOnload',
                   ],
-                  'absolute' => TRUE,
-                ])->toString(),
+                  'absolute' => true,
+                ])->toString()
               ],
             ],
           ];
-        }
-        else {
+        } else {
           // Fallback to Math captcha as hCaptcha is not configured.
           $captcha = captcha_captcha('generate', 'Math');
         }
@@ -77,23 +76,22 @@ function hcaptcha_captcha_validation($solution, $response, $element, $form_state
   $hcaptcha_secret_key = $config->get('secret_key');
   $hcaptcha_max_score = $config->get('widget.max_score');
 
-  if (!isset($stack->getCurrentRequest()->request->get('h-captcha-response')) || empty($stack->getCurrentRequest()->request->get('h-captcha-response')) || empty($hcaptcha_secret_key)) {
-    return FALSE;
+  if (!isset($_POST['h-captcha-response']) || empty($_POST['h-captcha-response']) || empty($hcaptcha_secret_key)) {
+    return false;
   }
 
-  $captcha = new HCaptcha($hcaptcha_site_key, $hcaptcha_secret_key, [], new Drupal8Post());
-  $captcha->validate($stack->getCurrentRequest()->request->get('h-captcha-response'), \Drupal::request()->getClientIp(), $hcaptcha_max_score);
+  $captcha = new HCaptcha($hcaptcha_site_key, $hcaptcha_secret_key, array(), new Drupal8Post());
+  $captcha->validate($_POST['h-captcha-response'], \Drupal::request()->getClientIp(), $hcaptcha_max_score);
 
   if ($captcha->isSuccess()) {
     // Verified!
-    return TRUE;
-  }
-  else {
+    return true;
+  } else {
     foreach ($captcha->getErrors() as $error) {
       \Drupal::logger('hCaptcha')->error('@error', ['@error' => $error]);
     }
   }
-  return FALSE;
+  return false;
 }
 
 /**
@@ -111,9 +109,9 @@ function hcaptcha_help($route_name, RouteMatchInterface $route_match) {
 
       // Add a link to the Drupal.org project.
       $output .= '<p>';
-      $output .= t('Visit the <a href=":project_link">hCaptcha project page</a> on Drupal.org for more information.', [
-        ':project_link' => 'https://www.drupal.org/project/hcaptcha',
-      ]);
+      $output .= t('Visit the <a href=":project_link">hCaptcha project page</a> on Drupal.org for more information.',[
+        ':project_link' => 'https://www.drupal.org/project/hcaptcha'
+        ]);
       $output .= '</p>';
 
       return $output;
