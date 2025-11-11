@@ -29,3 +29,16 @@ hcaptcha.settings:
         max_score:
           type: float
           label: 'Maximum score'
+        insible_mode:
+          type: string
+          label: 'Invisible render mode'
+        language:
+          type: string
+          label: 'Language'
+        button_overrides:
+          type: mapping
+          label: 'Button overrides'
+          mapping:
+            '*':
+              type: string
+              label: 'Form ID to button selector mapping'

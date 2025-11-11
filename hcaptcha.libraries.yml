@@ -1,7 +1,16 @@
 loader:
   js:
-    js/hcaptcha-loader.js: { }
+    js/hcaptcha-loader.js: {}
   dependencies:
     - core/drupal
     - core/drupalSettings
     - core/once
+
+invisible:
+  js:
+    js/hcaptcha_invisible.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - hcaptcha/loader

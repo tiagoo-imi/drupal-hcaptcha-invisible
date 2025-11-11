@@ -6,3 +6,6 @@ widget:
   size: ''
   tabindex: 0
   max_score: 0.8
+  invisible_mode: '' # on_button | container_execute
+  button_overrides: {  }    # mapa: form_id -> seletor do botão
+  language: ''

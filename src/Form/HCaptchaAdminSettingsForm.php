@@ -86,6 +86,7 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
       '#options' => [
         '' => $this->t('Normal (default)'),
         'compact' => $this->t('Compact'),
+        'invisible' => $this->t('Invisible'),
       ],
       '#title' => $this->t('Size'),
       '#type' => 'select',
@@ -111,6 +112,35 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
       '#max' => 1.0,
     ];
 
+    $form['widget']['hcaptcha_invisible_mode'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Invisible render mode'),
+      '#options' => [
+        'on_button' => $this->t('Attach to submit button (recommended)'),
+        'container_execute' => $this->t('Render in container and execute() manually'),
+      ],
+      '#default_value' => $config->get('widget.invisible_mode') ?: 'on_button',
+      '#states' => [
+        'visible' => [
+          ':input[name="hcaptcha_size"]' => ['value' => 'invisible'],
+        ],
+      ],
+    ];
+
+      $form['widget']['hcaptcha_button_overrides'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Per-form button selector overrides'),
+      '#description' => $this->t('YAML mapping of form_id to CSS selector. Example:') .
+        "\nuser_login_form: '#edit-submit'\ncontact_message_feedback_form: '#edit-actions-submit'",
+      '#default_value' => $this->yamlEncode($config->get('widget.button_overrides') ?: []),
+      '#states' => [
+        'visible' => [
+          ':input[name="hcaptcha_size"]' => ['value' => 'invisible'],
+          ':input[name="hcaptcha_invisible_mode"]' => ['value' => 'on_button'],
+        ],
+      ],
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -127,9 +157,27 @@ class HCaptchaAdminSettingsForm extends ConfigFormBase {
       ->set('widget.size', $form_state->getValue('hcaptcha_size'))
       ->set('widget.tabindex', $form_state->getValue('hcaptcha_tabindex'))
       ->set('widget.max_score', $form_state->getValue('hcaptcha_max_score'))
+      ->set('widget.invisible_mode', $form_state->getValue('hcaptcha_invisible_mode'))
+      ->set('widget.button_overrides', $this->yamlDecodeSafe($form_state->getValue('hcaptcha_button_overrides')))
+
       ->save();
 
     parent::submitForm($form, $form_state);
+  }
+
+  protected function yamlEncode($data) {
+    if (empty($data) || !is_array($data)) return '';
+    return \Symfony\Component\Yaml\Yaml::dump($data, 2);
+  }
+
+  protected function yamlDecodeSafe($text) {
+    if (!is_string($text) || $text === '') return [];
+    try {
+      $parsed = \Symfony\Component\Yaml\Yaml::parse($text);
+      return is_array($parsed) ? $parsed : [];
+    } catch (\Throwable $e) {
+      return [];
+    }
   }
 
 }
