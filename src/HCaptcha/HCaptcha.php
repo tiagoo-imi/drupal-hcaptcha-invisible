@@ -53,7 +53,7 @@ class HCaptcha
 
   $siteKeyFromConfig = !empty($this->attributes['data-sitekey'])
     ? $this->attributes['data-sitekey']
-    : ''
+    : '';
 
 
   $is_invisible_on_button = ($size === 'invisible' && $mode === 'on_button');
