@@ -48,13 +48,46 @@ class HCaptcha
       '#value' => 'hCaptcha no captcha',
     );
 
-    // As the validate callback does not depend on sid or solution, this
-    // captcha type can be displayed on cached pages.
-    $widget['cacheable'] = true;
+    $size = isset($this->attributes['data-size']) ? $this->attributes['data-size'] : '';
+    $mode = isset($this->attributes['data-mode']) ? $this->attributes['data-mode'] : 'container';
 
-    $widget['form']['hcaptcha_widget'] = array(
-      '#markup' => '<div' . $this->getAttributesString() . '></div>',
-    );
+  $siteKeyFromConfig = !empty($this->attributes['data-sitekey'])
+    ? $this->attributes['data-sitekey']
+    : ''
+
+
+  $is_invisible_on_button = ($size === 'invisible' && $mode === 'on_button');
+  if ($is_invisible_on_button) {
+    $widget['form']['hcaptcha_invisible_flag'] = [
+      '#type' => 'hidden',
+      '#value' => '1',
+      '#attributes' => ['name' => 'hcaptcha_invisible_flag'],
+    ];
+    
+    $widget['form']['#attached']['drupalSettings']['hcaptcha'] = [
+      'size' => 'invisible',
+      'mode' => 'on_button',
+      'sitekey' => $siteKeyFromConfig,
+    ];
+  }
+
+  // Como o validate não depende de sid/solution, pode ser cacheável.
+  $widget['cacheable'] = true;
+
+  if ($is_invisible_on_button) {
+    // Invisible acoplado ao botão: NÃO renderizamos o <div class="h-captcha">.
+    // O botão será marcado pelo JS e a API é carregada via 'loader' (dependency da nossa lib).
+    return $widget;
+  }
+
+  // Caso contrário (normal/compact ou invisible container_execute):
+  // Monta os atributos do DIV como antes.
+  $widget['form']['hcaptcha_widget'] = [
+    '#markup' => '<div' . $this->getAttributesString() . '></div>',
+    // Garante que a API será carregada pelo loader padrão:
+    '#attached' => ['library' => ['hcaptcha/loader']],
+  ];
+
     return $widget;
   }
 
