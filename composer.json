@@ -1,0 +1,38 @@
+{
+  "name": "drupal/hcaptcha",
+  "description": "hCaptcha integration for Drupal with Invisible mode and button attach support.",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://git.drupalcode.org/project/hcaptcha",
+  "authors": [
+    {
+      "name": "Original Drupal Contributors",
+      "homepage": "https://www.drupal.org/project/hcaptcha"
+    },
+    {
+      "name": "Tiago Alves",
+      "email": "tiagoo-imi@example.com",
+      "role": "Maintainer of Invisible Fork"
+    }
+  ],
+  "require": {
+    "php": ">=8.1"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "1.x-dev"
+    }
+  },
+  "support": {
+    "issues": "https://github.com/tiagoo-imi/drupal-hcaptcha-invisible/issues",
+    "source": "https://github.com/tiagoo-imi/drupal-hcaptcha-invisible"
+  },
+  "keywords": [
+    "drupal",
+    "hcaptcha",
+    "captcha",
+    "invisible",
+    "security",
+    "antibot"
+  ]
+}
